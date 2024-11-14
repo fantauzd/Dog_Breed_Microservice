@@ -20,7 +20,8 @@ function recommendBreed(criteria) {
     return "Mixed Breed";
 }
 
-app.post("/recommend-breed", (req, res) => {
+app.post("/dog-breed", (req, res) => {
+    console.log("Received criteria:", req.body);
     const criteria = req.body;
     const breed = recommendBreed(criteria);
     res.json({ breed });
