@@ -2,31 +2,34 @@
 const express = require("express");
 
 const app = express();
-const PORT = 3001;
+const PORT = 23109;
 
 app.use(express.json());
 
-function recommendBreed(criteria) {
-    // Simple logic for demonstration
-    if (criteria.activityLevel === "high" && criteria.space === "apartment") {
-        return "Jack Russell Terrier";
-    } else if (criteria.activityLevel === "low" && criteria.space === "house") {
-        return "Bulldog";
-    } else if (criteria.allergies) {
-        return "Poodle";
-    } else if (criteria.experienceWithDogs) {
-        return "Golden Retriever";
-    }
-    return "Mixed Breed";
-}
+// Endpoint to handle breed recommendation requests
+app.post('/dog-breed', (req, res) => {
+    const { size, energyLevel, goodWithKids, coatType, livingSpace, experienceWithDogs } = req.body;
 
-app.post("/dog-breed", (req, res) => {
-    console.log("Received criteria:", req.body);
-    const criteria = req.body;
-    const breed = recommendBreed(criteria);
-    res.json({ breed });
+    // Simple logic to determine the best dog breed based on criteria
+    let recommendedBreed = 'Labrador Retriever'; // Default breed
+
+    // Simple matching based on criteria (extend as needed)
+    if (size === 'small' && energyLevel === 'low' && livingSpace === 'apartment') {
+        recommendedBreed = 'French Bulldog';
+    } else if (size === 'medium' && energyLevel === 'high' && goodWithKids) {
+        recommendedBreed = 'Golden Retriever';
+    } else if (size === 'large' && energyLevel === 'high' && experienceWithDogs === 'advanced') {
+        recommendedBreed = 'German Shepherd';
+    }
+
+    // Send the recommended breed back to the main app
+    res.json({ breed: recommendedBreed });
 });
 
+// Start the microservice
+app.listen(PORT, () => {
+    console.log(`Dog breed recommendation microservice listening on port ${PORT}`);
+});
 /*
     LISTENER
 */
